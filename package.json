@@ -1,0 +1,16 @@
+{
+  "name": "idiamarket-full",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:frontend": "cd idiamarket && npm install",
+    "install:backend": "cd idiamarket-server && npm install",
+    "install": "npm run install:frontend && npm run install:backend",
+    "start:frontend": "cd idiamarket && npm run dev",
+    "start:backend": "cd idiamarket-server && npm start",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.0"
+  }
+}

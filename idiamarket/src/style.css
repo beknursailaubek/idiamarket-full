@@ -1,0 +1,119 @@
+@font-face {
+    font-family: "Museo Sans Cyrl";
+    src: url("./assets/fonts/MuseoSansCyrl-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Museo Sans Cyrl";
+    src: url("./assets/fonts/MuseoSansCyrl-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Museo Sans Cyrl";
+    src: url("./assets/fonts/MuseoSansCyrl-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Museo Sans Cyrl";
+    src: url("assets/fonts/MuseoSansCyrl-ExtraBold.woff2") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --white: #fff;
+    --background: #f5f5f7;
+    --grey-light: #aab9c8;
+    --grey-medium: #8e979f;
+    --grey: #464c53;
+    --grey-90: #212427;
+    --blue: #034ea2;
+    --blue-light: #2196f3;
+    --red: #de1604;
+    --red-dark: #c52416;
+    --green: #73be6f;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-size: 16px;
+    font-family: "Museo Sans Cyrl";
+    font-weight: 400;
+    color: var(--grey-90);
+    background: var(--background);
+    overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #d9dcde;
+    border-radius: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--white);
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    padding: 15px 0 20px;
+}
+
+.main_home {
+    padding: 50px 0;
+}
+
+.main_search {
+    padding: 20px 0 20px;
+}
+
+.container {
+    max-width: calc(1300px + 40px);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.container-1170 {
+    max-width: 1170px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.no-scroll {
+    overflow: hidden;
+}

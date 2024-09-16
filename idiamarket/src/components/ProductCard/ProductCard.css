@@ -1,0 +1,217 @@
+.product-cards {
+    position: relative;
+    width: 310px;
+    height: 380px;
+    padding: 20px 0 0;
+    background: var(--white);
+    border-radius: 8px;
+}
+
+.product-cards__title {
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding: 0 20px;
+}
+
+.product-card__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    transform: translateY(-50%);
+}
+
+.product-card__arrow_prev {
+    left: 0;
+}
+
+.product-card__arrow_next {
+    right: 0;
+}
+
+.product-card-arrow__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background: var(--white);
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.product-card_day {
+    padding: 0 20px 20px;
+}
+
+.product-card__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.product-card__label {
+    height: 18px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 4px;
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--red);
+    border-radius: 4px;
+}
+
+.product-card__actions {
+    display: flex;
+    gap: 10px;
+}
+
+.product-card__action {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.product-card__action_active {
+    filter: invert(24%) sepia(100%) saturate(7486%) hue-rotate(5deg) brightness(91%) contrast(97%);
+}
+
+.product-card__action:hover {
+    filter: invert(24%) sepia(100%) saturate(7486%) hue-rotate(5deg) brightness(91%) contrast(97%);
+}
+
+.product-card__view {
+    align-self: center;
+    height: 140px;
+    width: 140px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-card__image {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.product-card_day .product-card__view {
+    width: 220px;
+    height: 160px;
+}
+
+.product-card_day .product-card__image {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.product-card__title {
+    color: inherit;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    height: 3rem;
+    font-size: 14px;
+    color: var(--grey-90);
+    margin-bottom: 10px;
+}
+
+.product-card_day .product-card__title {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    height: 2rem;
+}
+
+.reviews {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.product-card_day .reviews {
+    margin-bottom: 0px;
+}
+
+.reviews__icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 3px;
+}
+
+.reviews__rating {
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 5px;
+}
+
+.reviews__text {
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--grey);
+}
+
+.product-card__footer {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-card_day .product-card__footer {
+    margin-bottom: 0;
+}
+
+.product-card__price-actual {
+    color: var(--grey-90);
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.product-card__price-discount {
+    color: var(--grey-90);
+    font-size: 12px;
+    text-decoration: line-through;
+}
+
+.product-card__button-cart {
+    color: var(--white);
+    padding: 4px 16px;
+    width: 100%;
+    background: var(--red);
+    border-radius: 8px;
+    transition: background 0.2s ease-in-out;
+}
+
+.product-card_day .product-card__button-cart {
+    width: auto;
+    padding: 8px 16px;
+    background: var(--red);
+}
+
+.product-card__button-cart:hover {
+    background: var(--red-dark);
+}
+
+.product-card__stickers {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

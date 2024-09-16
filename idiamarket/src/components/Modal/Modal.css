@@ -1,0 +1,55 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay_active {
+    animation: openModal 0.5s;
+}
+
+.modal-content {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 8px;
+    position: relative;
+    animation: openModal 0.5s;
+    transition: all 0.5s ease-in-out;
+}
+
+@keyframes openModal {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes closeModal {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    filter: invert(40%) sepia(9%) saturate(477%) hue-rotate(166deg) brightness(98%) contrast(89%);
+}

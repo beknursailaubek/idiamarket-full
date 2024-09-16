@@ -1,0 +1,272 @@
+/* WELCOME */
+.welcome {
+    max-height: 380px;
+}
+
+.welcome__inner {
+    display: flex;
+    gap: 20px;
+}
+
+.banner {
+    position: relative;
+    max-width: 970px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.banner__swiper {
+    border-radius: 8px;
+}
+
+.banner__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    transform: translateY(-50%);
+    opacity: 0;
+    width: 30px;
+    height: 30px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+}
+
+.banner__arrow_prev {
+    left: 20px;
+}
+
+.banner__arrow_next {
+    right: 20px;
+}
+
+.welcome__banner:hover .banner__arrow {
+    opacity: 1;
+}
+.banner-arrow__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.swiper-pagination {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.welcome__banner:hover .swiper-pagination {
+    opacity: 1;
+}
+
+.swiper-pagination-bullet {
+    opacity: 0.4;
+    background: var(--white);
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: var(--white);
+}
+
+/* CATEGORIES */
+.categories__box {
+    height: 600px;
+    display: flex;
+    gap: 20px;
+}
+
+.categories__group {
+    display: grid;
+    gap: 20px;
+}
+
+.categories__group_3 {
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.categories__group_4 {
+    grid-template-rows: repeat(4, 1fr);
+}
+
+.category {
+    min-width: 200px;
+    min-height: 135px;
+    position: relative;
+    display: flex;
+    padding: 30px 20px 20px 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+    background: var(--white);
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.category__image {
+    margin: auto;
+    height: 80%;
+    object-fit: contain;
+}
+
+.category__name {
+}
+
+.category:hover {
+    transform: scale(1.02);
+}
+
+.category_md {
+    padding: 25px 15px 20px 15px;
+}
+
+.category_sm {
+    padding: 20px 10px 10px 10px;
+    font-size: 12px;
+}
+
+.category__title {
+    color: var(--grey);
+    font-weight: 300;
+}
+
+.category__count {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: var(--grey-light);
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.category__torgovye-stellazhi {
+    grid-row: span 2;
+}
+
+.category__kassovye {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.category__palletnye-stellazhi {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.category__skladskie-stellazhi {
+    grid-column: 2;
+    grid-row: span 2;
+}
+
+.category__torgovoe-oborudovanie {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.category__holodilnoe {
+    grid-column: span 2;
+    grid-row: 1;
+}
+
+.category__pos-oborudovanie {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.category__vitriny {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.category__metallicheskie-shkafy {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+}
+
+.category__oborudovanie-dlya-aptek {
+    grid-row: 1;
+}
+
+.category__nejtralnoe-oborudovanie {
+    grid-row: 2 / span 2;
+}
+
+.category__oborudovanie-dlya-obshepita {
+    grid-row: 4;
+}
+
+/* POPULAR */
+
+.popular__products {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+/* ABOUT */
+.about__inner {
+    position: relative;
+    font-size: 12px;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 50px 50px 60px;
+}
+
+.about__inner_hidden {
+    height: 300px;
+    overflow-y: hidden;
+}
+
+.about__inner_hidden::before {
+    display: block;
+    content: "";
+    position: absolute;
+    height: 100px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 60%, rgba(255, 255, 255, 0) 100%);
+}
+
+
+.about__hide {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about__btn {
+    height: 40px;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.about-btn__text {
+    color: var(--blue-light);
+    font-size: 14px;
+}
+
+.about-btn__img {
+    filter: invert(43%) sepia(97%) saturate(2347%) hue-rotate(189deg) brightness(105%) contrast(91%);
+}
+
+.about__h1 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.about__text {
+    font-size: 12px;
+}
+
+.about__text:not(:last-child) {
+    margin-bottom: 20px;
+}

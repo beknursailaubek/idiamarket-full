@@ -1,0 +1,47 @@
+.sort {
+    position: relative;
+}
+
+.sort__wrapper {
+    height: 32px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 220px;
+    font-size: 14px;
+    color: var(--grey-90);
+    background: var(--white);
+    border-radius: 8px;
+}
+
+.sort__icon_arrow {
+    width: 16px;
+    height: 16px;
+}
+
+.sort__options {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-radius: 8px;
+}
+
+.sort__option {
+    height: 32px;
+    padding: 10px;
+    font-size: 14px;
+    color: var(--grey-90);
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.sort__option_selected {
+}

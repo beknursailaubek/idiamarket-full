@@ -1,0 +1,20 @@
+.breadcrumbs {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb {
+    color: var(--grey-light);
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+}
+
+.breadcrumb__icon {
+    color: var(--grey-light);
+    margin: 0 5px;
+}
+
+.breadcrumb:not(:last-child):hover {
+    text-decoration: underline;
+}
