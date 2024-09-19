@@ -87,7 +87,7 @@ const HomePage = () => {
   // Fetch category counts
   useEffect(() => {
     const fetchCategoryCounts = async () => {
-      const categoryCodes = ["torgovye-stellazhi", "kommercheskaya-mebel", "kassovye-boksy", "palletnye-stellazhi", "skladskie-stellazhi", "torgovoe-oborudovanie", "holodilnoe-oborudovanie", "pos-oborudovanie", "vitriny", "metallicheskie-shkafy", "oborudovanie-dlya-aptek", "nejtralnoe-oborudovanie", "oborudovanie-dlya-obshepita"];
+      const categoryCodes = ["torgovye-stellazhi", "palletnye-stellazhi", "skladskie-stellazhi", "metallicheskie-shkafy", "oborudovanie-dlya-aptek", "nejtralnoe-oborudovanie", "vitriny"];
 
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/categories/count`, {
@@ -197,30 +197,30 @@ const HomePage = () => {
                   <img loading="lazy" className="category__image" src={Category_1} alt="Торговые стеллажи" />
                   <p className="category__title">Торговые стеллажи</p>
                 </Link>
-                <Link to={`${cityPrefix}/category/kommercheskaya-mebel`} className="categories__item category category_md category__kommercheskaya-mebel">
-                  <span className="category__count">Товаров: {categories["kommercheskaya-mebel"] || 0}</span>
+                <Link target="_blank" to="https://mebelcenter.kz/" className="categories__item category category_md category__kommercheskaya-mebel">
+                  <span className="category__count">Товаров: {categories["kommercheskaya-mebel"] || 6}</span>
                   <img loading="lazy" className="category__image" src={Category_2} alt="Коммерческая мебель" />
                   <p className="category__title">Коммерческая мебель</p>
                 </Link>
               </div>
 
               <div className="categories__group categories__group_4">
-                <Link to={`${cityPrefix}/category/kassovye-boksy`} className="categories__item category category_sm category__kassovye-boksy">
-                  <span className="category__count">Товаров: {categories["kassovye-boksy"] || 0}</span>
+                <Link target="_blank" to="https://softgroup.kz/" className="categories__item category category_sm category__kassovye-boksy">
+                  <span className="category__count">Товаров: {categories["kassovye-boksy"] || 77}</span>
                   <img loading="lazy" className="category__image" src={Category_3} alt="Кассовые боксы" />
                   <p className="category__title">Кассовые боксы</p>
                 </Link>
                 <Link to={`${cityPrefix}/category/palletnye-stellazhi`} className="categories__item category category_sm category__palletnye-stellazhi">
-                  <span className="category__count">Товаров: {categories["palletnye-stellazhi"] || 0}</span>
+                  <span className="category__count">Товаров: {categories["palletnye-stellazhi"] || 4}</span>
                   <img loading="lazy" className="category__image" src={Category_4} alt="Паллетные стеллажи" />
                   <p className="category__title">Паллетные стеллажи</p>
                 </Link>
                 <Link to={`${cityPrefix}/category/skladskie-stellazhi`} className="categories__item category category__skladskie-stellazhi">
-                  <span className="category__count">Товаров: {categories["skladskie-stellazhi"] || 0}</span>
+                  <span className="category__count">Товаров: {categories["skladskie-stellazhi"] || 9}</span>
                   <img loading="lazy" className="category__image" src={Category_5} alt="Складские стеллажи" />
                   <p className="category__title">Складские стеллажи</p>
                 </Link>
-                <Link to={`${cityPrefix}/category/torgovoe-oborudovanie`} className="categories__item category category__torgovoe-oborudovanie">
+                <Link target="_blank" to="https://softgroup.kz/" className="categories__item category category__torgovoe-oborudovanie">
                   <span className="category__count">Товаров: {categories["torgovoe-oborudovanie"] || 0}</span>
                   <img loading="lazy" className="category__image" src={Category_6} alt="Торговое оборудование" />
                   <p className="category__title">Торговое оборудование</p>
@@ -228,23 +228,23 @@ const HomePage = () => {
               </div>
 
               <div className="categories__group categories__group_3">
-                <Link to={`${cityPrefix}/category/holodilnoe-oborudovanie`} className="categories__item category category__holodilnoe">
-                  <span className="category__count">Товаров: {categories["holodilnoe-oborudovanie"] || 0}</span>
+                <Link target="_blank" to="https://icegroup.kz/" className="categories__item category category__holodilnoe">
+                  <span className="category__count">Товаров: {categories["holodilnoe-oborudovanie"] || 416}</span>
                   <img loading="lazy" className="category__image" src={Category_7} alt="Холодильное оборудование" />
                   <p className="category__title">Холодильное оборудование</p>
                 </Link>
-                <Link to={`${cityPrefix}/category/pos-oborudovanie`} className="categories__item category category_md category__pos-oborudovanie">
-                  <span className="category__count">Товаров: {categories["pos-oborudovanie"] || 0}</span>
+                <Link target="_blank" to="https://softgroup.kz/" className="categories__item category category_md category__pos-oborudovanie">
+                  <span className="category__count">Товаров: {categories["pos-oborudovanie"] || 135}</span>
                   <img loading="lazy" className="category__image" src={Category_8} alt="POS оборудование" />
                   <p className="category__title">POS оборудование</p>
                 </Link>
                 <Link to={`${cityPrefix}/category/vitriny`} className="categories__item category category_md category__vitriny">
-                  <span className="category__count">Товаров: {categories["vitriny"] || 0}</span>
+                  <span className="category__count">Товаров: {categories["vitriny"] || 29}</span>
                   <img loading="lazy" className="category__image" src={Category_9} alt="Витрины" />
                   <p className="category__title">Витрины </p>
                 </Link>
                 <Link to={`${cityPrefix}/category/metallicheskie-shkafy`} className="categories__item category category__metallicheskie-shkafy">
-                  <span className="category__count">Товаров: {categories["metallicheskie-shkafy"] || 0}</span>
+                  <span className="category__count">Товаров: {categories["metallicheskie-shkafy"] || 107}</span>
                   <img loading="lazy" className="category__image" src={Category_10} alt="Металлические шкафы" />
                   <p className="category__title">Металлические шкафы</p>
                 </Link>
@@ -252,17 +252,17 @@ const HomePage = () => {
 
               <div className="categories__group categories__group_4">
                 <Link to={`${cityPrefix}/category/oborudovanie-dlya-aptek`} className="categories__item category category_sm category__oborudovanie-dlya-aptek">
-                  <span className="category__count">Товаров: {categories["oborudovanie-dlya-aptek"] || 0}</span>
+                  <span className="category__count">Товаров: {categories["oborudovanie-dlya-aptek"] || 6}</span>
                   <img loading="lazy" className="category__image" src={Category_11} alt="Оборудование для аптек" />
                   <p className="category__title">Оборудование для аптек</p>
                 </Link>
                 <Link to={`${cityPrefix}/category/nejtralnoe-oborudovanie`} className="categories__item category category__nejtralnoe-oborudovanie">
-                  <span className="category__count">Товаров: {categories["nejtralnoe-oborudovanie"] || 0}</span>
+                  <span className="category__count">Товаров: {categories["nejtralnoe-oborudovanie"] || 253}</span>
                   <img loading="lazy" className="category__image" src={Category_12} alt="Нейтральное оборудование" />
                   <p className="category__title">Нейтральное оборудование</p>
                 </Link>
-                <Link to={`${cityPrefix}/category/oborudovanie-dlya-obshepita`} className="categories__item category category_sm category__oborudovanie-dlya-obshepita">
-                  <span className="category__count">Товаров: {categories["oborudovanie-dlya-obshepita"] || 0}</span>
+                <Link target="_blank" to="https://horest.kz/" className="categories__item category category_sm category__oborudovanie-dlya-obshepita">
+                  <span className="category__count">Товаров: {categories["oborudovanie-dlya-obshepita"] || 659}</span>
                   <img loading="lazy" className="category__image" src={Category_13} alt="Оборудование для общепита" />
                   <p className="category__title">Оборудование для общепита</p>
                 </Link>
