@@ -1,6 +1,7 @@
 const slugify = require("slugify");
 const Category = require("../models/category");
 const Product = require("../models/product");
+const Color = require("../models/color")
 
 // Create a new Category
 async function buildUri(parentId, slugifiedTitle) {
@@ -121,15 +122,17 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
   try {
     const categoryCode = req.params.category_code;
 
-    const page = parseInt(req.query.page, 10);
-
-    const limit = parseInt(req.query.limit, 10);
-
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * limit;
 
     const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : 0;
     const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : Infinity;
 
+    // Split color query parameter by commas to handle multiple color selections
+    const colorCodes = req.query.colors ? req.query.colors.split(",") : [];
+
+    // Find the category by category code
     const category = await Category.findOne({ category_code: categoryCode }).populate({
       path: "children",
       model: "Category",
@@ -139,9 +142,25 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
       return res.status(404).send({ error: "Category not found" });
     }
 
+    // Initialize the color filter
+    let colorFilter = {};
+
+    if (colorCodes.length > 0) {
+      // Find the colors by their codes
+      const colors = await Color.find({ code: { $in: colorCodes } });
+
+      if (colors.length > 0) {
+        // Extract the color IDs
+        const colorIds = colors.map((color) => color._id);
+        colorFilter = { color: { $in: colorIds } };
+      }
+    }
+
+    // Find products with the category ID and other filters
     const products = await Product.find({
       categories: category._id,
       price: { $gte: minPrice, $lte: maxPrice },
+      ...colorFilter, // Apply the color filter
     })
       .populate("color")
       .populate("categories")
@@ -159,13 +178,16 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
+    // Count total products for pagination
     const totalProducts = await Product.countDocuments({
       categories: category._id,
       price: { $gte: minPrice, $lte: maxPrice },
+      ...colorFilter, // Apply the color filter for counting
     });
 
     const totalPages = Math.ceil(totalProducts / limit);
 
+    // Send the response
     res.send({
       category,
       products,
