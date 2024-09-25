@@ -121,11 +121,14 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
   try {
     const categoryCode = req.params.category_code;
 
-    const page = parseInt(req.query.page, 10) || 1;
+    const page = parseInt(req.query.page, 10);
 
-    const limit = parseInt(req.query.limit, 10) || 20;
+    const limit = parseInt(req.query.limit, 10);
 
     const skip = (page - 1) * limit;
+
+    const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : 0;
+    const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : Infinity;
 
     const category = await Category.findOne({ category_code: categoryCode }).populate({
       path: "children",
@@ -136,7 +139,10 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
       return res.status(404).send({ error: "Category not found" });
     }
 
-    const products = await Product.find({ categories: category._id })
+    const products = await Product.find({
+      categories: category._id,
+      price: { $gte: minPrice, $lte: maxPrice },
+    })
       .populate("color")
       .populate("categories")
       .populate("short_description")
@@ -153,7 +159,10 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    const totalProducts = await Product.countDocuments({ categories: category._id });
+    const totalProducts = await Product.countDocuments({
+      categories: category._id,
+      price: { $gte: minPrice, $lte: maxPrice },
+    });
 
     const totalPages = Math.ceil(totalProducts / limit);
 
@@ -166,6 +175,63 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
         currentPage: page,
         pageSize: limit,
       },
+    });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+// Get All Products for Filters by Category Code
+exports.getAllProductsForFiltersByCategoryCode = async (req, res) => {
+  try {
+    const categoryCode = req.params.category_code;
+
+    const category = await Category.findOne({ category_code: categoryCode }).populate({
+      path: "children",
+      model: "Category",
+    });
+
+    if (!category) {
+      return res.status(404).send({ error: "Category not found" });
+    }
+
+    const products = await Product.find({
+      categories: category._id,
+    })
+      .populate("color")
+      .populate("attributes.items");
+
+    if (!products) {
+      return res.status(404).send({ error: "No products found" });
+    }
+
+    // Extract unique values for filters (price range, colors, attributes)
+    const prices = products.map((product) => parseFloat(product.price));
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+
+    const colors = Array.from(new Set(products.map((product) => product.color?.title).filter(Boolean)));
+
+    const attributes = {};
+    products.forEach((product) => {
+      product.attributes.forEach((attr) => {
+        if (!attributes[attr.code]) {
+          attributes[attr.code] = new Set();
+        }
+        attr.items.forEach((item) => attributes[attr.code].add(item.title));
+      });
+    });
+
+    // Convert Set to Array
+    Object.keys(attributes).forEach((key) => {
+      attributes[key] = Array.from(attributes[key]);
+    });
+
+    res.send({
+      minPrice,
+      maxPrice,
+      colors,
+      attributes,
     });
   } catch (error) {
     res.status(500).send({ error: error.message });
