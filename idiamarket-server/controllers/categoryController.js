@@ -2,6 +2,8 @@ const slugify = require("slugify");
 const Category = require("../models/category");
 const Product = require("../models/product");
 const Color = require("../models/color");
+const AttributeItem = require("../models/attributeItem");
+const Attributes = require("../models/attributes");
 
 // Create a new Category
 async function buildUri(parentId, slugifiedTitle) {
@@ -117,7 +119,7 @@ exports.deleteCategory = async (req, res) => {
   }
 };
 
-// Get Products by Category Code
+// Get Products by Category Code with Attribute Filters
 exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
   try {
     const categoryCode = req.params.category_code;
@@ -130,7 +132,21 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
     const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : Infinity;
 
     // Split color query parameter by commas to handle multiple color selections
-    const colorCodes = req.query.colors ? req.query.colors.split(",") : [];
+    const colorCodes = req.query.colors ? req.query.colors.split(",").filter(Boolean) : [];
+
+    // Extract attributes from query parameters for filtering
+    let attributeFilters = {};
+    Object.keys(req.query).forEach((key) => {
+      // Assuming attribute codes like "vysota-mm" will be part of the query keys
+      if (key !== "page" && key !== "limit" && key !== "minPrice" && key !== "maxPrice" && key !== "colors") {
+        const value = req.query[key];
+        if (typeof value === "string") {
+          attributeFilters[key] = value.split(",");
+        } else if (Array.isArray(value)) {
+          attributeFilters[key] = value; // Use the array directly
+        }
+      }
+    });
 
     // Find the category by category code
     const category = await Category.findOne({ category_code: categoryCode }).populate({
@@ -144,11 +160,9 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
 
     // Initialize the color filter
     let colorFilter = {};
-
     if (colorCodes.length > 0) {
       // Find the colors by their codes
       const colors = await Color.find({ code: { $in: colorCodes } });
-
       if (colors.length > 0) {
         // Extract the color IDs
         const colorIds = colors.map((color) => color._id);
@@ -156,17 +170,53 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
       }
     }
 
+    // Initialize attribute filters
+    let attributeConditions = [];
+    if (Object.keys(attributeFilters).length > 0) {
+      for (const [attributeCode, values] of Object.entries(attributeFilters)) {
+        // Find matching AttributeItems for the given code and values
+        const matchingItems = await AttributeItem.find({
+          code: attributeCode,
+          attribute_values: { $in: values },
+          is_active: true, // Only active attribute items
+        });
+
+        if (matchingItems.length > 0) {
+          const attributeItemIds = matchingItems.map((item) => item._id);
+
+          // Find corresponding Attributes that contain these AttributeItems
+          const matchingAttributes = await Attributes.find({
+            items: { $in: attributeItemIds },
+          });
+
+          if (matchingAttributes.length > 0) {
+            const attributeIds = matchingAttributes.map((attr) => attr._id);
+            attributeConditions.push({ attributes: { $in: attributeIds } });
+          }
+        }
+      }
+    }
+
+    // Combine all attribute conditions into a single filter if any exist
+    let attributeFilter = {};
+    if (attributeConditions.length > 0) {
+      attributeFilter = { $and: attributeConditions };
+    }
+
     // Find products with the category ID and other filters
     const products = await Product.find({
       categories: category._id,
       price: { $gte: minPrice, $lte: maxPrice },
+      is_enabled: true, // Only enabled products
       ...colorFilter, // Apply the color filter
+      ...attributeFilter, // Apply the attribute filter
     })
       .populate("color")
       .populate("categories")
       .populate("short_description")
       .populate({
         path: "attributes",
+        model: "Attributes",
         populate: {
           path: "items",
           model: "AttributeItem",
@@ -182,7 +232,9 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
     const totalProducts = await Product.countDocuments({
       categories: category._id,
       price: { $gte: minPrice, $lte: maxPrice },
+      is_enabled: true, // Only enabled products
       ...colorFilter, // Apply the color filter for counting
+      ...attributeFilter, // Apply the attribute filter for counting
     });
 
     const totalPages = Math.ceil(totalProducts / limit);
@@ -197,63 +249,6 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
         currentPage: page,
         pageSize: limit,
       },
-    });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-};
-
-// Get All Products for Filters by Category Code
-exports.getAllProductsForFiltersByCategoryCode = async (req, res) => {
-  try {
-    const categoryCode = req.params.category_code;
-
-    const category = await Category.findOne({ category_code: categoryCode }).populate({
-      path: "children",
-      model: "Category",
-    });
-
-    if (!category) {
-      return res.status(404).send({ error: "Category not found" });
-    }
-
-    const products = await Product.find({
-      categories: category._id,
-    })
-      .populate("color")
-      .populate("attributes.items");
-
-    if (!products) {
-      return res.status(404).send({ error: "No products found" });
-    }
-
-    // Extract unique values for filters (price range, colors, attributes)
-    const prices = products.map((product) => parseFloat(product.price));
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
-
-    const colors = Array.from(new Set(products.map((product) => product.color?.title).filter(Boolean)));
-
-    const attributes = {};
-    products.forEach((product) => {
-      product.attributes.forEach((attr) => {
-        if (!attributes[attr.code]) {
-          attributes[attr.code] = new Set();
-        }
-        attr.items.forEach((item) => attributes[attr.code].add(item.title));
-      });
-    });
-
-    // Convert Set to Array
-    Object.keys(attributes).forEach((key) => {
-      attributes[key] = Array.from(attributes[key]);
-    });
-
-    res.send({
-      minPrice,
-      maxPrice,
-      colors,
-      attributes,
     });
   } catch (error) {
     res.status(500).send({ error: error.message });
