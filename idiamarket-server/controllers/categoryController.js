@@ -1,7 +1,7 @@
 const slugify = require("slugify");
 const Category = require("../models/category");
 const Product = require("../models/product");
-const Color = require("../models/color")
+const Color = require("../models/color");
 
 // Create a new Category
 async function buildUri(parentId, slugifiedTitle) {
