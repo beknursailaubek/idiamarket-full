@@ -255,6 +255,97 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
   }
 };
 
+// Get all filter options by category
+exports.getCategoryFilterOptions = async (req, res) => {
+  try {
+    const categoryCode = req.params.category_code;
+
+    // Find category
+    const category = await Category.findOne({ category_code: categoryCode });
+
+    if (!category) {
+      return res.status(404).send({ error: "Category not found" });
+    }
+
+    // Find all products in the category (without pagination)
+    const products = await Product.find({
+      categories: category._id,
+      is_enabled: true,
+    })
+      .populate("color")
+      .populate({
+        path: "attributes",
+        populate: {
+          path: "items",
+          model: "AttributeItem",
+        },
+      });
+
+    // Ensure products is not undefined
+    if (!products || products.length === 0) {
+      return res.status(404).send({ error: "No products found for this category" });
+    }
+
+    // Aggregate price range
+    const prices = products.map((product) => parseFloat(product.price)).filter((price) => !isNaN(price));
+    const minPrice = prices.length ? Math.min(...prices) : 0;
+    const maxPrice = prices.length ? Math.max(...prices) : 0;
+
+    // Aggregate unique colors
+    const colors = products
+      .filter((product) => product.color)
+      .map((product) => ({
+        code: product.color.code,
+        title: product.color.title,
+        hex: product.color.hex,
+      }));
+    const uniqueColors = Array.from(new Map(colors.map((c) => [c.code, c])).values());
+
+    // Aggregate unique attributes
+    const attributeItemMap = {};
+    products.forEach((product, productIndex) => {
+      // Ensure product.attributes exists and is an array
+      if (product.attributes && Array.isArray(product.attributes)) {
+        product.attributes.forEach((attribute, attributeIndex) => {
+          // Check if attribute.items exists and is an array
+          if (attribute.items && Array.isArray(attribute.items)) {
+            attribute.items.forEach((item) => {
+              // Group by item.code
+              if (!attributeItemMap[item.code]) {
+                attributeItemMap[item.code] = {
+                  title: item.title,
+                  display_type: item.display_type,
+                  values: new Set(),
+                };
+              }
+              attributeItemMap[item.code].values.add(item.value);
+            });
+          } else {
+            console.warn(`Attribute items are undefined or not an array for productIndex ${productIndex}, attributeIndex ${attributeIndex}`);
+          }
+        });
+      } else {
+        console.warn(`Product attributes are undefined or not an array for productIndex ${productIndex}`);
+      }
+    });
+
+    const groupedAttributes = Object.keys(attributeItemMap).map((code) => ({
+      code,
+      title: attributeItemMap[code].title,
+      display_type: attributeItemMap[code].display_type,
+      values: Array.from(attributeItemMap[code].values),
+    }));
+
+    res.send({
+      priceRange: [minPrice, maxPrice],
+      colors: uniqueColors,
+      attributes: groupedAttributes,
+    });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
 // Count Products by Category Code
 exports.countProductsByCategoryCodes = async (req, res) => {
   try {
