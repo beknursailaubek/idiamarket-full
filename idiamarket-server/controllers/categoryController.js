@@ -206,7 +206,9 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
     // Find products with the category ID and other filters
     const products = await Product.find({
       categories: category._id,
-      price: { $gte: minPrice, $lte: maxPrice },
+      $expr: {
+        $and: [{ $gte: [{ $toDouble: "$price" }, minPrice] }, { $lte: [{ $toDouble: "$price" }, maxPrice] }],
+      },
       is_enabled: true, // Only enabled products
       ...colorFilter, // Apply the color filter
       ...attributeFilter, // Apply the attribute filter
@@ -231,7 +233,9 @@ exports.getCategoryAndProductsByCategoryCode = async (req, res) => {
     // Count total products for pagination
     const totalProducts = await Product.countDocuments({
       categories: category._id,
-      price: { $gte: minPrice, $lte: maxPrice },
+      $expr: {
+        $and: [{ $gte: [{ $toDouble: "$price" }, minPrice] }, { $lte: [{ $toDouble: "$price" }, maxPrice] }],
+      },
       is_enabled: true, // Only enabled products
       ...colorFilter, // Apply the color filter for counting
       ...attributeFilter, // Apply the attribute filter for counting
