@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createProduct, getProductByUri, getAllProducts, getPopularProducts, updateProductById, getDayProducts, searchProducts, deleteProductById, updateProductBySku } = require("../controllers/productController");
+const { createProduct, getProductByUri, getAllProducts, getPopularProducts, updateProductById, getDayProducts, searchProducts, deleteProductById, updateProductBySku, getSearchFilterOptions } = require("../controllers/productController");
 
 // Create a new Product
 router.post("/product", createProduct);
@@ -24,6 +24,9 @@ router.put("/product/sku/:sku", updateProductBySku);
 
 // Search Products by query
 router.get("/products/search", searchProducts);
+
+//Get filter options for search
+router.get("/products/search/filters", getSearchFilterOptions);
 
 // Delete a Product by ID
 router.delete("product/:id", deleteProductById);
